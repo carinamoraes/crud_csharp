@@ -26,6 +26,8 @@ builder.Services.AddSwaggerGen();
 // Configuração das dependências dos repositórios
 // Toda vez que alguém chamar a interface, o código sabe a classe que deve instanciar
 builder.Services.AddScoped<IUser, UserRepository>(); // IUser implementa UserRepository
+builder.Services.AddScoped<ICategory, CategoryRepository>();
+builder.Services.AddScoped<IVideo, VideoRepository>();
 
 var app = builder.Build();
 

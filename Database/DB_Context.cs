@@ -11,6 +11,8 @@ namespace crud_csharp.Database
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Video> Videos { get; set; }
 
     }
 }

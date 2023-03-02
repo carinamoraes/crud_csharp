@@ -25,7 +25,7 @@ namespace crud_csharp.Controllers
             return Ok(users);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("findbyid/{id}")]
         public async Task<ActionResult<List<User>>> FindById([FromRoute] string id)
         {
             User user = await _userRepository.FindById(id);
