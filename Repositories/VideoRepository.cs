@@ -1,7 +1,9 @@
 ﻿using crud_csharp.Database;
 using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
 using crud_csharp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace crud_csharp.Repositories
 {
@@ -16,27 +18,48 @@ namespace crud_csharp.Repositories
 
         public async Task<List<Video>> GetAll()
         {
-            return await _context.Videos.ToListAsync();
+            return await _context.Videos.Include(x => x.Category).ToListAsync();
         }
 
         public async Task<Video> FindById(string id)
         {
-            return await _context.Videos.FirstAsync(x => x.Id == id);
+            return await _context.Videos.Include(x => x.Category).FirstAsync(x => x.Id == id);
         }
 
-        public Task<Video> Create(Video video)
+        public async Task<Video> Create(Video video)
         {
-            throw new NotImplementedException();
+            Category category = await 
+                _context.Categories.FirstAsync(x => x.Id == video.Category_id) ?? 
+                throw new Exception("Category does not exist."); ;
+
+            await _context.Videos.AddAsync(video);
+            await _context.SaveChangesAsync();
+
+            return video;
         }
 
-        public async Task<Video> Update(Video video, string id)
+        public async Task<Video> Update(VideoUpdateRequestDTO video, string id)
         {
-            throw new NotImplementedException();
+            Video updatedVideo = await FindById(id) ?? throw new Exception("Video does not exist.");
+
+            updatedVideo.Name = video.Name ?? updatedVideo.Name;
+            updatedVideo.Description = video.Description ?? updatedVideo.Description;
+            updatedVideo.Duration = video.Duration ?? updatedVideo.Duration;
+            updatedVideo.Category_id = video.Category_id ?? updatedVideo.Category_id;
+
+            _context.Videos.Update(updatedVideo);
+            await _context.SaveChangesAsync();
+            return updatedVideo;
         }
 
-        public Task<Video> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            Video video_aux = await FindById(id) ?? throw new Exception("Video does not exist.");
+
+            _context.Videos.Remove(video_aux);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

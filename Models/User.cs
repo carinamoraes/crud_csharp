@@ -5,7 +5,7 @@ namespace crud_csharp.Models
     public class User
     {
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Column("name")]
         public string Name { get; set; }
@@ -17,6 +17,6 @@ namespace crud_csharp.Models
         public string Password { get; set; }
 
         [Column("created_at")]
-        public DateTime Created_at { get; set; }
+        public DateTimeOffset Created_at { get; set; } = DateTimeOffset.Now;
     }
 }

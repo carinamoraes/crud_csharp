@@ -1,4 +1,5 @@
 ﻿using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
 using crud_csharp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,10 +27,31 @@ namespace crud_csharp.Controllers
         }
 
         [HttpGet("findbyid/{id}")]
-        public async Task<ActionResult<List<Category>>> FindById([FromRoute] string id)
+        public async Task<ActionResult<Category>> FindById([FromRoute] string id)
         {
             Category category = await _categoryRepository.FindById(id);
             return Ok(category);
+        }
+
+        [HttpPost]  
+        public async Task<ActionResult<Category>> Create([FromBody] Category category)
+        {
+            await _categoryRepository.Create(category);
+            return Ok(category);
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult<Category>> Update([FromBody] CategoryUpdateRequestDTO category, [FromRoute] string id)
+        {   
+            Category updatedCategory = await _categoryRepository.Update(category, id);
+            return Ok(updatedCategory);    
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<bool>> Delete([FromRoute] string id)
+        {
+            bool deleted = await _categoryRepository.Delete(id);
+            return Ok(deleted);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace crud_csharp.Models
     public class Video
     {
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Column("name")]
         public string Name { get; set; }
@@ -19,7 +19,12 @@ namespace crud_csharp.Models
         [Column("category_id")]
         public string Category_id { get; set; }
 
+        [ForeignKey("Category_id")]
+        public virtual Category? Category { get; set; }
+
         [Column("created_at")]
-        public DateTime Created_at { get; set; }
+        public DateTimeOffset Created_at { get; set; } = DateTimeOffset.Now;
+
+
     }
 }

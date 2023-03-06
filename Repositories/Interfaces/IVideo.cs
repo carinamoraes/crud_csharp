@@ -1,4 +1,5 @@
 ﻿using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
 
 namespace crud_csharp.Repositories.Interfaces
 {
@@ -10,8 +11,8 @@ namespace crud_csharp.Repositories.Interfaces
 
         Task<Video> Create(Video video);
 
-        Task<Video> Update(Video video, string id);
+        Task<Video> Update(VideoUpdateRequestDTO video, string id);
 
-        Task<Video> Delete(string id);
+        Task<bool> Delete(string id);
     }
 }
