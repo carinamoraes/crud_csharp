@@ -1,4 +1,5 @@
 ﻿using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
 
 namespace crud_csharp.Repositories.Interfaces
 {
@@ -10,8 +11,8 @@ namespace crud_csharp.Repositories.Interfaces
 
         Task<User> Create(User user);
 
-        Task<User> Update(User user, string id);
+        Task<User> Update(UserUpdateRequestDTO user, string id);
 
-        Task<User> Delete(string id);
+        Task<bool> Delete(string id);
     }
 }

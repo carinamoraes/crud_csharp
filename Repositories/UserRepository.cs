@@ -1,5 +1,6 @@
 ﻿using crud_csharp.Database;
 using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
 using crud_csharp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,19 +25,35 @@ namespace crud_csharp.Repositories
             return await _context.Users.FirstAsync(x => x.Id == id);
         }
 
-        public Task<User> Create(User user)
+        public async Task<User> Create(User user)
         {
-            throw new NotImplementedException();
+            user.HashPassword();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return user;
         }
 
-        public async Task<User> Update(User user, string id)
+        public async Task<User> Update(UserUpdateRequestDTO user, string id)
         {
-            throw new NotImplementedException();
+            User updatedUser = await FindById(id) ?? throw new Exception("User does not exist.");
+
+            updatedUser.Name = user.Name ?? updatedUser.Name;
+            updatedUser.Email = user.Email ?? updatedUser.Email;
+
+            _context.Users.Update(updatedUser);
+            await _context.SaveChangesAsync();
+            return updatedUser;
         }
 
-        public Task<User> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            User user_aux = await FindById(id) ?? throw new Exception("User does not exist.");
+
+            _context.Users.Remove(user_aux);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

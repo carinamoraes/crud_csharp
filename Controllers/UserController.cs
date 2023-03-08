@@ -1,4 +1,6 @@
 using crud_csharp.Models;
+using crud_csharp.Models.DTOs;
+using crud_csharp.Repositories;
 using crud_csharp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +32,27 @@ namespace crud_csharp.Controllers
         {
             User user = await _userRepository.FindById(id);
             return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<User>> Create([FromBody] User user)
+        {
+            await _userRepository.Create(user);
+            return Ok(user);
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult<User>> Update([FromBody] UserUpdateRequestDTO user, [FromRoute] string id)
+        {
+            User updatedUser = await _userRepository.Update(user, id);
+            return Ok(updatedUser);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<bool>> Delete([FromRoute] string id)
+        {
+            bool deleted = await _userRepository.Delete(id);
+            return Ok(deleted);
         }
     }
 }
