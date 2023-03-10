@@ -23,7 +23,7 @@ namespace crud_csharp.Models
 
         public void HashPassword()
         {
-            Password = Password.Generate();
+            Password = Password.GenerateHashPassword();
         }
     }
 }

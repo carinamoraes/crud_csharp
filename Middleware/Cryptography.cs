@@ -5,7 +5,7 @@ namespace crud_csharp.Middleware
 {
     public static class Cryptography
     {
-        public static string Generate(this string password)
+        public static string GenerateHashPassword(this string password)
         {
             var hash = SHA1.Create();
             var encoding = new ASCIIEncoding();
