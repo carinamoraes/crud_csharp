@@ -2,6 +2,7 @@
 using crud_csharp.Models.DTOs;
 using crud_csharp.Repositories;
 using crud_csharp.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace crud_csharp.Controllers
@@ -23,6 +24,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Video>>> GetAll()
         {
             List<Video> videos = await _videoRepository.GetAll();
@@ -30,6 +32,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpGet("findbyid/{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Video>>> FindById([FromRoute] string id)
         {
             Video video = await _videoRepository.FindById(id);
@@ -37,6 +40,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Video>> Create([FromBody] Video video)
         {
             await _videoRepository.Create(video);
@@ -44,6 +48,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<ActionResult<Video>> Update([FromBody] VideoUpdateRequestDTO video, [FromRoute] string id)
         {
             Video updatedVideo = await _videoRepository.Update(video, id);
@@ -51,6 +56,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task<ActionResult<bool>> Delete([FromRoute] string id)
         {
             bool deleted = await _videoRepository.Delete(id);

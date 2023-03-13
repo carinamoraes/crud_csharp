@@ -1,6 +1,7 @@
 ﻿using crud_csharp.Models;
 using crud_csharp.Models.DTOs;
 using crud_csharp.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace crud_csharp.Controllers
@@ -20,6 +21,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Category>>> GetAll()
         {
             List<Category> categories = await _categoryRepository.GetAll();
@@ -27,13 +29,15 @@ namespace crud_csharp.Controllers
         }
 
         [HttpGet("findbyid/{id}")]
+        [Authorize]
         public async Task<ActionResult<Category>> FindById([FromRoute] string id)
         {
             Category category = await _categoryRepository.FindById(id);
             return Ok(category);
         }
 
-        [HttpPost]  
+        [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Category>> Create([FromBody] Category category)
         {
             await _categoryRepository.Create(category);
@@ -41,6 +45,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<ActionResult<Category>> Update([FromBody] CategoryUpdateRequestDTO category, [FromRoute] string id)
         {   
             Category updatedCategory = await _categoryRepository.Update(category, id);
@@ -48,6 +53,7 @@ namespace crud_csharp.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task<ActionResult<bool>> Delete([FromRoute] string id)
         {
             bool deleted = await _categoryRepository.Delete(id);
